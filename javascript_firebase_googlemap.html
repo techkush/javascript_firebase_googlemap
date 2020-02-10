@@ -1,0 +1,51 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ruhunu Kumari</title>
+<style>
+    #map {
+        height: 100%;
+    }
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+<script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyA8qcwweMniJ6LKqY9N8kSfD2w2QSP_vPI",
+        authDomain: "hasystem-b6df4.firebaseapp.com",
+        databaseURL: "https://hasystem-b6df4.firebaseio.com",
+        projectId: "hasystem-b6df4",
+        storageBucket: "hasystem-b6df4.appspot.com",
+        messagingSenderId: "891785841120"
+    };
+    firebase.initializeApp(config);
+</script>
+<div id="map"></div>
+<script>
+    function initMap() {
+        var ref = firebase.database().ref('vehicle_tracking/train_details/ruhunukumari');
+		ref.on("value", function(snapshot) {
+			console.log(snapshot.val());
+			var latlng = new google.maps.LatLng(snapshot.val().latitude, snapshot.val().longitude);
+			var myOptions = { zoom: 14, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP };
+			var map = new google.maps.Map(document.getElementById("map"), myOptions);
+			var latlng_map = new google.maps.LatLng(snapshot.val().latitude, snapshot.val().longitude);
+			var marker = new google.maps.Marker({
+                position: latlng_map,
+                map: map,
+                title: 'Ruhunu Kumari',
+			});
+		}, function (error) {
+			console.log("Error: " + error.code);
+		});
+		
+    }
+</script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9ZPf7vv5WnDZh2GAkRLG2fyGzDiudXtc&libraries=visualization&callback=initMap">
+</script>
